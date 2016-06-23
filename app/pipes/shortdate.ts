@@ -14,13 +14,9 @@ export class Shortdate {
   /*
     Takes a value and makes it lowercase.
    */
-  transform(value, args) {
-    if (value == 'http://i.imgur.com/hLD9hzI.jpg'){
-      return args;
-    } else if (value){
-      return value;
-    } else {
-      return args;
-    }
+  
+
+  transform(value, args) {    
+    return value.substring(5,16);    
   }
 }
