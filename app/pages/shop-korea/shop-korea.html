@@ -19,16 +19,16 @@
 <ion-content padding class="shop-korea">
 
   <ion-list>
-    <ion-refresher (refresh)="doRefresh($event)">
+    <ion-refresher (ionRefresh)="doRefresh($event)" >
       <ion-refresher-content pullingIcon="arrow-down" pullingText="PULL_TO_REFRESH" refreshingSpinner="circles" refreshingText="REFRESHING">
       </ion-refresher-content>
     </ion-refresher>
     <ion-item *ngIf="itemList.length == 0">
       <ion-spinner></ion-spinner>데이터 조회중 입니다.
     </ion-item>
-    <ion-item-sliding *ngFor="#item of itemList">
+    <ion-item-sliding *ngFor="let item of itemList">
       <button full ion-item (click)="openLink(item)">
-        <img class="small" item-left src="{{item.imgSrc | default: 'https://goo.gl/nwe4wR'}}" />
+        <img class="small" item-left src="{{item.imgSrc | default: 'https://goo.gl/nwe4wR'}}" onerror="this.src='https://goo.gl/nwe4wR'"/>
           <h3 *ngIf="!item.soldOut">{{item.title}}</h3>
           <h3 [ngClass]="{soldOut:item.soldOut}" *ngIf="item.soldOut">종료:{{item.title}}</h3>
             <p>
@@ -40,7 +40,7 @@
             </p>
         </button>
     </ion-item-sliding>
-    <ion-infinite-scroll (infinite)="doInfinite($event)">
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </ion-list>

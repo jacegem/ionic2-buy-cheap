@@ -16,6 +16,7 @@ declare var dateFormat: any;
 @Injectable()
 export class Util {
   data: any;
+  itemMap: any = {};
 
   constructor(private http: Http
     , private ngZone: NgZone) {
@@ -49,6 +50,55 @@ export class Util {
     this.ngZone.run(() => { });
   }
 
+  loadPpomppu(_url, _page) {
+    return new Observable(observer => {
+      let url = _url + _page;
+      this.http.get(url).subscribe(data => {
+        let doc = this.getDocFromData(data);
+        let elements = doc.querySelectorAll('ul.bbsList .none-border');
+
+        for (var i in elements) {
+          if (i == 'length') break;
+          let item: any = {};
+          item.title = elements[i].querySelector('span.title').textContent.trim();  // 제품명
+          let img: any = elements[i].querySelector('div.thmb img');
+          if (img) item.imgSrc = img.src; // 이미지
+          item.imgSrc = item.imgSrc.replace("http://cache.", "https://");
+          item.category = elements[i].querySelector('span.ty').textContent.trim();  // 카테고리
+          item.writer = elements[i].querySelector('span.ty_02').textContent.trim(); // 글쓴이
+          item.reply = elements[i].querySelector('div.com_line span');
+          if (item.reply) item.reply = item.reply.textContent.trim(); //  댓글 수 
+          item.good = elements[i].querySelector('span.recom').textContent.trim();;  // 추천
+          item.url = "http://m.ppomppu.co.kr/new/" + elements[i].querySelector('a[href]').getAttribute('href');
+          item.url = this.removePage(item.url);
+
+          // url
+          item.soldOut = elements[i].querySelector('span.title span');
+
+          this.itemMap[item.url] = item;
+
+          this.http.get(item.url).subscribe(data => {
+            let item: any = this.itemMap[data.url];
+            let doc = this.getDocFromData(data);
+            let dateText = doc.querySelector('div.info span.hi').textContent.trim();
+            let pattern = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/;
+            let match = pattern.exec(dateText);
+            item.dateFormat = this.getDateFormat(match[1]);
+
+            let img: any = doc.querySelector('div.cont img');
+            if (img) {
+              pattern = /data:image/;
+              match = pattern.exec(img.src);
+              if (match) item.imgSrc = img.src;
+            } 
+
+            observer.next(item);
+          });
+        }
+      });
+    });
+  }
+
   // dealbada에서 정보를 가져온다. 
   loadDealbada(_url, _page) {
     return new Observable(observer => {
@@ -66,15 +116,17 @@ export class Util {
 
           this.http.get(url).subscribe(data => {
             let item: any = {};
-            item.url = data.url;
+            item.url = this.removePage(data.url);
 
-            let doc = this.getDocFromData(data);           
+            let doc = this.getDocFromData(data);
             let articleSection = doc.querySelector('#bo_v_info');
             // 종료 글인경우에, articleSection이 없다.
             if (!articleSection) return;
 
             let spans = articleSection.querySelectorAll('div span');
             item.title = spans[0].textContent.trim();
+            if (item.title == "블라인드 처리된 게시물입니다") return;
+
             let dateStr = spans[7].textContent.trim();
             item.dateFormat = this.getDateFormat(dateStr);
             item.read = spans[9].textContent.trim();
@@ -91,12 +143,12 @@ export class Util {
               item.reply = spans[19].textContent.trim();
             }
 
-            let bodySection = doc.querySelector('#bo_v_info');
+            let bodySection = doc.querySelector('#bo_v_con');
             let img;
-            img = articleSection.querySelectorAll('img')[0];
+            img = bodySection.querySelectorAll('img')[0];
+
             if (img) item.imgSrc = img.src;
 
-            //_callback(item, _caller);
             observer.next(item);
           });
         }
@@ -104,11 +156,12 @@ export class Util {
     });
   }
 
+  removePage(_url) {    
+    return _url.replace(/&page=\d+/g, "");
+  }
+
   getKeyFromUrl(_url) {
-    let url: any;
-    let pattern = /(.+)&page=\d+(.*)/;
-    let match = pattern.exec(_url);
-    if (match) url = match[1] + match[2];
+    let url = this.removePage(_url);
     let rep = url.replace(/\./g, "_dot_").replace(/\//g, "_slash_");
     return rep;
   }

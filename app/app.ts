@@ -8,26 +8,40 @@ import {GlobalConfig} from './providers/global-config/global-config';
 
 
 declare var globalConfig: any;
+declare var AdMob: any;
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
 })
 export class MyApp {
 
-  private rootPage:any;
+  private rootPage: any;
 
-  constructor(private platform:Platform
-              , firebase: Firebase) {
+  constructor(private platform: Platform
+    , firebase: Firebase
+    , globalConfig: GlobalConfig) {
     this.rootPage = TabsPage;
-    
+
     // Initialize Firebase
     firebase.initializeApp();
-  
+
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
+
+      if (/(android)/i.test(navigator.userAgent)) {
+        if (AdMob) {
+          AdMob.createBanner(
+            {
+              adId: globalConfig.getAdMobBannerId(),
+              position: AdMob.AD_POSITION.BOTTOM_CENTER,
+              autoShow: true
+            }
+          );
+        }
+      }
     });
   }
 }
