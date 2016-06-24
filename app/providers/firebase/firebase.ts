@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {GlobalConfig} from '../global-config/global-config';
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the Firebase provider.
@@ -8,12 +10,36 @@ import 'rxjs/add/operator/map';
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular 2 DI.
 */
+declare var firebase: any;
+
 @Injectable()
 export class Firebase {
   data: any;
 
-  constructor(private http: Http) {
+  constructor(private http: Http
+    , private globalConfig: GlobalConfig) {
     this.data = null;
+  }
+
+  initializeApp() {
+    firebase.initializeApp(this.globalConfig.getFirebase());
+  }
+
+  ref(_path) {
+    return firebase.database().ref(_path);
+  }
+
+  refOnce(_path, _sortValue, _dateFormat, _pageRow) {
+    return new Observable(observer => {
+      firebase.database().ref(_path).orderByChild(_sortValue).endAt(_dateFormat).limitToLast(_pageRow).once('value',
+        (snapshot) => {
+          let items = snapshot.val();
+          debugger;
+          observer.next(items);
+        }, (error) => {
+
+        });
+    });
   }
 
   load() {

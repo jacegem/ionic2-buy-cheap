@@ -2,10 +2,12 @@ import {Component} from '@angular/core';
 import {Platform, ionicBootstrap} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {TabsPage} from './pages/tabs/tabs';
+import {Firebase} from './providers/firebase/firebase';
+import { Util } from './providers/util/util';
+import {GlobalConfig} from './providers/global-config/global-config';
 
 
 declare var globalConfig: any;
-declare var firebase: any;
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
@@ -14,11 +16,13 @@ export class MyApp {
 
   private rootPage:any;
 
-  constructor(private platform:Platform) {
+  constructor(private platform:Platform
+              , firebase: Firebase) {
     this.rootPage = TabsPage;
     
     // Initialize Firebase
-    firebase.initializeApp(globalConfig.firebase);
+    firebase.initializeApp();
+  
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -39,6 +43,6 @@ export class MyApp {
 
 
 // tabbarPlacement: 'bottom'은 탭의 위치를 아래로 내린다. 안드로이드의 경우 기본 탭의 위치가 상단으로 되어 있다. 
-ionicBootstrap(MyApp, [firebase], {
+ionicBootstrap(MyApp, [Firebase, GlobalConfig, Util], {
   tabbarPlacement: 'bottom'
 })
