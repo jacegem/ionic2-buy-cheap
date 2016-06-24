@@ -23,6 +23,7 @@ export class ShopKoreaPage {
   path = '2016/site-moa/shop-korea';  // 저장하는 공간 주소
   sortValue = 'dateFormat';
   lastItem: any = {};      // 마지막 아이템
+  searchText = '';
 
   dealbadaUrl = "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=";
   ppomppuUrl = "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=";
@@ -34,6 +35,23 @@ export class ShopKoreaPage {
     this.init();
     this.getItems(null);
   }
+
+  search(){
+    if (this.searchText == '') {
+      for (var i in this.itemList){
+        this.itemList[i].hide = undefined;
+      }
+    }else{
+      for (var i in this.itemList){
+        let n = this.itemList[i].title.toLowerCase().search(this.searchText.toLowerCase());
+        if (n != -1) this.itemList[i].hide = undefined;
+        else this.itemList[i].hide = true;
+      }
+    }
+    console.log("search");
+    this.util.show();
+  }
+
 
   init() {
     this.sitePage = 1;        // 사이트 페이지   
@@ -67,6 +85,7 @@ export class ShopKoreaPage {
         this.itemMap[item.url] = 1;
       }
 
+      this.search();
       if (_infiniteScroll) _infiniteScroll.complete();
       this.getRealData();
     });
@@ -94,7 +113,8 @@ export class ShopKoreaPage {
           this.itemList.push(item);
           this.itemMap[item.url] = 1;
         }
-        this.util.show();
+        //this.util.show();
+        this.search();
         if (_event) _event.complete();
         this.getRealData();
       }, (error) => {
@@ -125,7 +145,8 @@ export class ShopKoreaPage {
     if (!added && this.lastItem.dateFormat < item.dateFormat) {
       this.itemList.push(item);
       this.itemList = this.util.sortListReverse(this.itemList);
-      this.util.show();
+      this.search();
+      //this.util.show();
     }
   }
 
