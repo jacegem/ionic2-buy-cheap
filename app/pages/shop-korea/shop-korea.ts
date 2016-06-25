@@ -20,29 +20,42 @@ export class ShopKoreaPage {
   itemMap: any = {};
   sitePage: number;     // 실정보 요청시 사용하는 페이지
   pageRow = 50;      // 한번에 보여주는 아이템 수
-  path = '2016/site-moa/shop-korea';  // 저장하는 공간 주소
+  path = '2016/buy-cheap/shop-korea';  // 저장하는 공간 주소
   sortValue = 'dateFormat';
   lastItem: any = {};      // 마지막 아이템
   searchText = '';
+  lastSearchText = '';
 
+  clienType = 'korea';
   dealbadaUrl = "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=";
   ppomppuUrl = "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=";
+  clienUrl = "http://m.clien.net/cs3/board?bo_style=lists&bo_table=jirum&spt=&page=";
+  ddanziUrl = "http://www.ddanzi.com/index.php?mid=pumpin&page=";
 
-  constructor(private nav: NavController
-    , private fb: Firebase
-    , private util: Util
-    , private platform: Platform) {
+  constructor(public nav: NavController
+    , public fb: Firebase
+    , public util: Util
+    , public platform: Platform) {
+      debugger;
     this.init();
     this.getItems(null);
   }
 
-  search(){
+  search() {
+    if (this.lastSearchText == '' && this.searchText == '') {
+      this.util.show();
+      return;
+    } else {
+      this.lastSearchText = this.searchText;
+    }
+
+
     if (this.searchText == '') {
-      for (var i in this.itemList){
+      for (var i in this.itemList) {
         this.itemList[i].hide = undefined;
       }
-    }else{
-      for (var i in this.itemList){
+    } else {
+      for (var i in this.itemList) {
         let n = this.itemList[i].title.toLowerCase().search(this.searchText.toLowerCase());
         if (n != -1) this.itemList[i].hide = undefined;
         else this.itemList[i].hide = true;
@@ -99,6 +112,7 @@ export class ShopKoreaPage {
   }
 
   getItems(_event) {
+    debugger;
     this.fb.ref(this.path).orderByChild(this.sortValue).limitToLast(this.pageRow).once('value'
       , (snapshot) => {
         let items = snapshot.val();
@@ -116,7 +130,7 @@ export class ShopKoreaPage {
         //this.util.show();
         this.search();
         if (_event) _event.complete();
-        this.getRealData();
+        setTimeout(this.getRealData(), 1000);
       }, (error) => {
         console.log("ERROR:", error)
       });
@@ -142,7 +156,8 @@ export class ShopKoreaPage {
     // 목록에 없으면, 추가하고 리스트 소팅
     let added = this.itemMap[item.url];
 
-    if (!added && this.lastItem.dateFormat < item.dateFormat) {
+    if (!added) {
+      if (this.lastItem && this.lastItem.dateFormat > item.dateFormat) return;
       this.itemList.push(item);
       this.itemList = this.util.sortListReverse(this.itemList);
       this.search();
@@ -157,8 +172,13 @@ export class ShopKoreaPage {
     this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
       this.saveItem(item);
     });
-    // this.loadClien(this.sitePage);
-    // this.loadDdanzi(this.sitePage);
+    this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
+      this.saveItem(item);
+    });
+    this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
+      this.saveItem(item);
+    });
+
     this.sitePage++;
   }
 }
