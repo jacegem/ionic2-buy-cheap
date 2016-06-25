@@ -158,10 +158,11 @@ export class Util {
           item.category = elements[i].querySelector('span.lst_category');  // 카테고리
           if (!item.category) continue;
 
-          if (_type == 'korea')
+          if (_type == 'korea') {
             if (item.category.textContent.trim().startsWith('[해외구매')) continue;
-          else 
+          } else {
             if (!item.category.textContent.trim().startsWith('[해외구매')) continue;
+          }
 
           item.url = elements[i].querySelector('div.wrap_tit').getAttribute('onclick'); // url
           var pattern = /.+?='(.+)'/;
@@ -211,10 +212,10 @@ export class Util {
           let item: any = {};
           let category: any = elements[i].querySelector('td.td_cate a.bo_cate_link');
           if (category) category = category.textContent.trim();
-          else continue; 
+          else continue;
           if (category == '공지') continue;
-          let a = elements[i].querySelector('td.td_img a');          
-          if (a) item.url = a.getAttribute('href');          
+          let a = elements[i].querySelector('td.td_img a');
+          if (a) item.url = a.getAttribute('href');
           let reply = elements[i].querySelector('span.cnt_cmt');
           if (reply) item.reply = reply.textContent.trim();
           this.itemMap[item.url] = item;

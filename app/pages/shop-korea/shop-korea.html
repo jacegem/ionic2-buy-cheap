@@ -26,7 +26,7 @@
     </ion-item>
     <ion-item-sliding *ngFor="let item of itemList" [hidden]="item.hide">
       <button full ion-item (click)="openLink(item)">
-        <img class="small" item-left src="{{item.imgSrc | default: 'https://goo.gl/XRC5yU'}}" onerror="this.src='https://goo.gl/XRC5yU'"/>
+        <img class="small" item-left src="{{item.imgSrc | default: 'https://goo.gl/XaKTWs'}}" onerror="this.src='https://goo.gl/XaKTWs'"/>
           <h3 *ngIf="!item.soldOut">{{item.title}}</h3>
           <h3 [ngClass]="{soldOut:item.soldOut}" *ngIf="item.soldOut">종료:{{item.title}}</h3>
             <p>

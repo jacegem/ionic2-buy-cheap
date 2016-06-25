@@ -4,7 +4,7 @@ import { Shortdate } from '../../pipes/shortdate'
 import { Default } from '../../pipes/default'
 import { Firebase } from '../../providers/firebase/firebase';
 import { Util } from '../../providers/util/util';
-import {ShopKoreaPage} from '../shop-korea/shop-korea';
+import { ShopPage } from '../shop/shop';
 
 /*
   Generated class for the ShopOverseasPage page.
@@ -16,7 +16,7 @@ import {ShopKoreaPage} from '../shop-korea/shop-korea';
   templateUrl: 'build/pages/shop-overseas/shop-overseas.html'
   , pipes: [[Shortdate], [Default]]
 })
-export class ShopOverseasPage extends ShopKoreaPage {
+export class ShopOverseasPage extends ShopPage {
   itemList: any = [];  // 아이템 목록;
   itemMap: any = {};
   sitePage: number;     // 실정보 요청시 사용하는 페이지
@@ -33,8 +33,10 @@ export class ShopOverseasPage extends ShopKoreaPage {
   constructor(nav: NavController
     , fb: Firebase
     , util: Util
-    , platform: Platform) {
+    , platform: Platform) {      
     super(nav, fb, util, platform);
+    this.init();
+    this.getItems(null);
   }
 
 }

@@ -36,7 +36,6 @@ export class ShopKoreaPage {
     , public fb: Firebase
     , public util: Util
     , public platform: Platform) {
-      debugger;
     this.init();
     this.getItems(null);
   }
@@ -112,7 +111,7 @@ export class ShopKoreaPage {
   }
 
   getItems(_event) {
-    debugger;
+    
     this.fb.ref(this.path).orderByChild(this.sortValue).limitToLast(this.pageRow).once('value'
       , (snapshot) => {
         let items = snapshot.val();
