@@ -26,6 +26,7 @@ export class Firebase {
   }
 
   ref(_path) {
+    if (!firebase || !firebase.database()) this.initializeApp();
     return firebase.database().ref(_path);
   }
 

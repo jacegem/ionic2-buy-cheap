@@ -30,17 +30,6 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
-      var backbutton = 0;
-      platform.registerBackButtonAction((event) => {
-        if (backbutton == 0) {
-          backbutton++;
-          let toast = Toast.create({
-            message: 'User was added successfully',
-            duration: 3000
-          });
-          this.nav.present(toast);
-        }
-      });
 
       if (/(android)/i.test(navigator.userAgent)) {
         if (AdMob) {
@@ -51,6 +40,11 @@ export class MyApp {
               autoShow: true
             }
           );
+          AdMob.prepareInterstitial(
+            {
+              adId: globalConfig.getAdMobInterstitial(),
+              autoShow: false
+            });
         }
       }
     });

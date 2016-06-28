@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import { NavController, Platform, Toast } from 'ionic-angular';
 import { Firebase } from '../../providers/firebase/firebase';
 import { Util } from '../../providers/util/util';
+//import { Toast } from 'ionic-native';
+
 /*
   Generated class for the ShopPage page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+declare var AdMob: any; 
+
 @Component({
   templateUrl: 'build/pages/shop/shop.html',
 })
@@ -31,24 +35,25 @@ export class ShopPage {
 
 
 
-  constructor(private nav: NavController
-    , private fb: Firebase
-    , private util: Util
-    , private platform: Platform) {
-
+  constructor(public nav: NavController
+    , public fb: Firebase
+    , public util: Util
+    , public platform: Platform) {
     var backbutton = 0;
     platform.registerBackButtonAction((event) => {
+      debugger;
       if (backbutton == 0) {
         backbutton++;
         let toast = Toast.create({
-          message: 'User was added successfully',
-          duration: 3000
+          message: '종료하시려면 한번 더 눌러주세요',
+          duration: 2000
         });
         this.nav.present(toast);
         // 2초 후 리셋
         setTimeout(function () { backbutton = 0; }, 2000);
-      }else{
-        platform.exitApp();
+      } else {
+        AdMob.showInterstitial();
+        setTimeout(platform.exitApp(), 2000);        
       }
     });
   }
