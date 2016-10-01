@@ -32,6 +32,7 @@ export class ShopPage {
   ppomppuUrl: any;
   clienUrl: any;
   ddanziUrl: any;
+  ruliwebUrl: any;
 
 
 
@@ -58,29 +59,29 @@ export class ShopPage {
     });
   }
 
-  search() {
-    if (this.lastSearchText == '' && this.searchText == '') {
-      this.util.show();
-      return;
-    } else {
-      this.lastSearchText = this.searchText;
-    }
+  // search() {
+  //   if (this.lastSearchText == '' && this.searchText == '') {
+  //     this.util.show();
+  //     return;
+  //   } else {
+  //     this.lastSearchText = this.searchText;
+  //   }
 
 
-    if (this.searchText == '') {
-      for (var i in this.itemList) {
-        this.itemList[i].hide = undefined;
-      }
-    } else {
-      for (var i in this.itemList) {
-        let n = this.itemList[i].title.toLowerCase().search(this.searchText.toLowerCase());
-        if (n != -1) this.itemList[i].hide = undefined;
-        else this.itemList[i].hide = true;
-      }
-    }
-    console.log("search");
-    this.util.show();
-  }
+  //   if (this.searchText == '') {
+  //     for (var i in this.itemList) {
+  //       this.itemList[i].hide = undefined;
+  //     }
+  //   } else {
+  //     for (var i in this.itemList) {
+  //       let n = this.itemList[i].title.toLowerCase().search(this.searchText.toLowerCase());
+  //       if (n != -1) this.itemList[i].hide = undefined;
+  //       else this.itemList[i].hide = true;
+  //     }
+  //   }
+  //   console.log("search");
+  //   this.util.show();
+  // }
 
 
   init() {
@@ -115,7 +116,7 @@ export class ShopPage {
         this.itemMap[item.url] = 1;
       }
 
-      this.search();
+      // this.search();
       if (_infiniteScroll) _infiniteScroll.complete();
       this.getRealData();
     });
@@ -144,7 +145,7 @@ export class ShopPage {
           this.itemMap[item.url] = 1;
         }
         //this.util.show();
-        this.search();
+        //this.search();
         if (_event) _event.complete();
         setTimeout(this.getRealData(), 1000);
       }, (error) => {
@@ -176,24 +177,33 @@ export class ShopPage {
       if (this.lastItem && this.lastItem.dateFormat > item.dateFormat) return;
       this.itemList.push(item);
       this.itemList = this.util.sortListReverse(this.itemList);
-      this.search();
+      //this.search();
       //this.util.show();
     }
   }
 
   getRealData() {
-    this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
-      this.saveItem(item);
-    });
-    this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
-      this.saveItem(item);
-    });
-    this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
-      this.saveItem(item);
-    });
-    this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
-      this.saveItem(item);
-    });
+    debugger;
+    // this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
+    //   this.saveItem(item);
+    // });
+    // this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
+    //   this.saveItem(item);
+    // });
+    // this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
+    //   this.saveItem(item);
+    // });
+    // this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
+    //   this.saveItem(item);
+    // });
+
+    // if (this.ruliwebUrl){
+    //   this.util.loadRuliweb(this.ruliwebUrl, this.sitePage).subscribe((item)=> {
+    //         this.saveItem(item)
+    //   })
+    // }   
+
+    this.util.loadRuliweb(this.ruliwebUrl, this.sitePage)
 
     this.sitePage++;
   }

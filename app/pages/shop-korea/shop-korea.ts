@@ -35,6 +35,7 @@ export class ShopKoreaPage extends ShopPage {
   ppomppuUrl = "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=";
   clienUrl = "http://m.clien.net/cs3/board?bo_style=lists&bo_table=jirum&spt=&page=";
   ddanziUrl = "http://www.ddanzi.com/index.php?mid=pumpin&page=";
+  ruliwebUrl = "http://m.ruliweb.com/community/board/1020/list?page=";  
 
   constructor(nav: NavController
     , fb: Firebase
