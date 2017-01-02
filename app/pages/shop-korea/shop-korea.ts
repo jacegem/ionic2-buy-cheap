@@ -24,7 +24,7 @@ export class ShopKoreaPage extends ShopPage {
   itemMap: any = {};
   sitePage: number;     // 실정보 요청시 사용하는 페이지
   pageRow = 50;      // 한번에 보여주는 아이템 수
-  path = '2016/buy-cheap/shop-korea';  // 저장하는 공간 주소
+  path = 'buy-cheap/shop-korea';  // 저장하는 공간 주소
   sortValue = 'dateFormat';
   lastItem: any = {};      // 마지막 아이템
   searchText = '';

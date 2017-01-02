@@ -22,7 +22,7 @@ export class ShopOverseasPage extends ShopPage {
   sitePage: number;     // 실정보 요청시 사용하는 페이지
   lastItem: any = {};      // 마지막 아이템
 
-  path = '2016/buy-cheap/shop-overseas';  // 저장하는 공간 주소
+  path = 'buy-cheap/shop-overseas';  // 저장하는 공간 주소
   clienType = 'overseas';
 
   dealbadaUrl = "http://www.dealbada.com/bbs/board.php?bo_table=deal_oversea&page=";
