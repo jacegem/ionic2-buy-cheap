@@ -42,7 +42,6 @@ export class ShopPage {
     , public platform: Platform) {
     var backbutton = 0;
     platform.registerBackButtonAction((event) => {
-      debugger;
       if (backbutton == 0) {
         backbutton++;
         let toast = Toast.create({
@@ -82,6 +81,7 @@ export class ShopPage {
   //   console.log("search");
   //   this.util.show();
   // }
+
 
 
   init() {
@@ -183,7 +183,6 @@ export class ShopPage {
   }
 
   getRealData() {
-    debugger;
     for(var i=0; i < 3; i++){
       this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
         this.saveItem(item);

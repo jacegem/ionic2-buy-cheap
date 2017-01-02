@@ -26,7 +26,6 @@ export class Util {
   // 리스트를 역순으로 정렬해서 반환한다.
   sortListReverse(_list) {
     _list.sort((a, b) => {
-      debugger;
       if (a.dateFormat < b.dateFormat) {
         return 1;
       } else if (a.dateFormat > b.dateFormat) {
