@@ -19,7 +19,7 @@ export class ShopPage {
   itemList: any = [];  // 아이템 목록;
   itemMap: any = {};
   sitePage: number;     // 실정보 요청시 사용하는 페이지
-  pageRow = 50;      // 한번에 보여주는 아이템 수
+  pageRow = 100;      // 한번에 보여주는 아이템 수
   path: any;  // 저장하는 공간 주소
   sortValue = 'dateFormat';
   lastItem: any = {};      // 마지막 아이템
@@ -184,23 +184,25 @@ export class ShopPage {
 
   getRealData() {
     debugger;
-    this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
-      this.saveItem(item);
-    });
-    this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
-      this.saveItem(item);
-    });
-    this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
-      this.saveItem(item);
-    });
-    this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
-      this.saveItem(item);
-    });
+    for(var i=0; i < 3; i++){
+      this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
+        this.saveItem(item);
+      });
+      this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
+        this.saveItem(item);
+      });
+      this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
+        this.saveItem(item);
+      });
+      this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
+        this.saveItem(item);
+      });
 
-    // this.util.loadRuliweb(this.ruliwebUrl, this.sitePage).subscribe((item) => {
-    //   this.saveItem(item);
-    // })
+      // this.util.loadRuliweb(this.ruliwebUrl, this.sitePage).subscribe((item) => {
+      //   this.saveItem(item);
+      // })
 
-    this.sitePage++;
+      this.sitePage++;
+    }   
   }
 }

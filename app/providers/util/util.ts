@@ -26,6 +26,7 @@ export class Util {
   // 리스트를 역순으로 정렬해서 반환한다.
   sortListReverse(_list) {
     _list.sort((a, b) => {
+      debugger;
       if (a.dateFormat < b.dateFormat) {
         return 1;
       } else if (a.dateFormat > b.dateFormat) {
@@ -377,42 +378,44 @@ export class Util {
       }
 
   getDateFormat(dateStr) {
-        dateStr = dateStr.trim();
+      dateStr = dateStr.trim();
 
-        let now = new Date();
-        let yyyy = now.getFullYear();
-        let mm = now.getMonth();
-        let dd = now.getDate();
-        let hh = now.getHours();
-        let mi = now.getMinutes();
+      let now = new Date();
+      let yyyy = now.getFullYear();
+      let mm = now.getMonth();
+      let thisMonth = mm;
+      let dd = now.getDate();
+      let hh = now.getHours();
+      let mi = now.getMinutes();
 
-        let match: any;
-        let pattern: any;
+      let match: any;
+      let pattern: any;
 
-        pattern = /(\d{2})-(\d{2}) (\d{2}):(\d{2})/;    // 06-02 09:45
-        match = pattern.exec(dateStr);
-        if(match) {
-          mm = match[1] - 1;
-          dd = match[2];
-          hh = match[3];
-          mi = match[4];
-        }
-
-    pattern = /(\d{4}).(\d{2}).(\d{2}) (\d{2}):(\d{2})(:\d{2})?/;  //2016-06-02 13:43
-        match = pattern.exec(dateStr);
-
-        if(match) {
-          yyyy = match[1];
-          mm = match[2] - 1;
-          dd = match[3];
-          hh = match[4];
-          mi = match[5];
-        }
-
-
-    let date = new Date(yyyy, mm, dd, hh, mi);
-        return dateFormat(date, "yyyy-mm-dd HH:MM");
+      pattern = /(\d{2})-(\d{2}) (\d{2}):(\d{2})/;    // 06-02 09:45
+      match = pattern.exec(dateStr);
+      if(match) {
+        mm = match[1] - 1;
+        dd = match[2];
+        hh = match[3];
+        mi = match[4];
       }
+
+      pattern = /(\d{4}).(\d{2}).(\d{2}) (\d{2}):(\d{2})(:\d{2})?/;  //2016-06-02 13:43
+      match = pattern.exec(dateStr);
+      if(match) {
+        yyyy = match[1];
+        mm = match[2] - 1;
+        dd = match[3];
+        hh = match[4];
+        mi = match[5];
+      }
+
+      if (mm > thisMonth) yyyy =- 1;
+        
+      let date = new Date(yyyy, mm, dd, hh, mi);
+
+      return dateFormat(date, "yyyy-mm-dd HH:MM");
+  }
 
   getDocFromData(data) {
         let parser = new DOMParser();
