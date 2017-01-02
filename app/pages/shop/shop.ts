@@ -184,26 +184,22 @@ export class ShopPage {
 
   getRealData() {
     debugger;
-    // this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
-    //   this.saveItem(item);
-    // });
-    // this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
-    //   this.saveItem(item);
-    // });
-    // this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
-    //   this.saveItem(item);
-    // });
-    // this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
-    //   this.saveItem(item);
-    // });
+    this.util.loadDealbada(this.dealbadaUrl, this.sitePage).subscribe((item) => {
+      this.saveItem(item);
+    });
+    this.util.loadPpomppu(this.ppomppuUrl, this.sitePage).subscribe((item) => {
+      this.saveItem(item);
+    });
+    this.util.loadClien(this.clienUrl, this.sitePage, this.clienType).subscribe((item) => {
+      this.saveItem(item);
+    });
+    this.util.loadDdanzi(this.ddanziUrl, this.sitePage).subscribe((item) => {
+      this.saveItem(item);
+    });
 
-    // if (this.ruliwebUrl){
-    //   this.util.loadRuliweb(this.ruliwebUrl, this.sitePage).subscribe((item)=> {
-    //         this.saveItem(item)
-    //   })
-    // }   
-
-    this.util.loadRuliweb(this.ruliwebUrl, this.sitePage)
+    // this.util.loadRuliweb(this.ruliwebUrl, this.sitePage).subscribe((item) => {
+    //   this.saveItem(item);
+    // })
 
     this.sitePage++;
   }
